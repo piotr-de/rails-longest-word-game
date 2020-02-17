@@ -1,4 +1,8 @@
 class GamesController < ApplicationController
+  def home
+
+  end
+
   def new
     @letters = ("A".."Z").to_a.sample(10)
 
