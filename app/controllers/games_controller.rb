@@ -1,6 +1,11 @@
 class GamesController < ApplicationController
   def new
     @letters = ("A".."Z").to_a.sample(10)
+
+    if params[:reset_score] == "1"
+      cookies[:score] = 0
+    end
+
   end
 
   def score
@@ -27,9 +32,9 @@ class GamesController < ApplicationController
 
     @grid_valid = true if @letters_used == @answer_array
     if @grid_valid && dict_valid
-      score = @answer_array.length
-      @response = "Well done! Your score is #{score}"
-
+      score = @answer_array.length.to_i
+      cookies[:score] ? cookies[:score] = cookies[:score].to_i + score : cookies[:score] = score
+      @response = "Well done! Points earned for this word: #{score} / total score: #{cookies[:score]}"
     elsif @grid_valid && !dict_valid
       @response = "#{@answer} is not a valid English word"
     else
